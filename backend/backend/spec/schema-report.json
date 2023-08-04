@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "number",
+      "readOnly": true
+    },
+    "name": {
+      "type": "string"
+    },
+    "date_start": {
+      "type": "string",
+      "format": "date"
+    },
+    "date_end": {
+      "type": "string",
+      "format": "date"
+    },
+    "tickers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "metric": {
+            "type": "string",
+            "enum": ["open", "high", "low", "close", "volume"]
+          },
+          "ticker": {
+            "type": "string"
+          }
+        },
+        "required": ["metric", "ticker"]
+      }
+    }
+  },
+  "required": ["id", "name", "date_start", "date_end", "tickers"]
+}
