@@ -4,7 +4,7 @@
 
 - install dependencies
   - poetry
-  - node
+  - node v16.0.0
   - npm
 
 ## Frontend environment
