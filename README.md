@@ -61,12 +61,12 @@ The schema GET /report/{id}/data is a suggestion. You can structure it however y
 ```json
 {
   "2022-08-01": {
-    "AAPL": 160.521,
-    "MSFT": 276.453
+    "AAPL": {"value": 160.521, "metric" : "open"},
+    "MSFT": {"value": 276.453, "metric" : "close"}
   },
   "2022-08-02": {
-    "AAPL": 159.613,
-    "MSFT": 274.641
+    "AAPL": {"value": 159.613, "metric" : "open"},
+    "MSFT": {"value": 274.641, "metric" : "close"}
   },
 ...
 }
@@ -78,26 +78,31 @@ is equally valid as
 [
   {
    "ticker": "AAPL",
-    "date": "2022-08-01",
-   "value": 160.521
+   "date": "2022-08-01",
+   "value": 160.521,
+   "metric": "open"
+
   },
   {
    "ticker": "MSFT",
    "date": "2022-08-01",
-   "value": 276.453
+   "value": 276.453,
+   "metric": "close"
   },
   {
     "ticker": "AAPL",
     "date": "2022-08-02",
-    "value": 159.613
+    "value": 159.613,
+    "metric": "open"
   },
   {
     "ticker": "MSFT",
     "date": "2022-08-02",
-    "value": 274.641
+    "value": 274.641,
+    "metric": "close"
   },
 ...
 ]
 ```
 
-It's really up to you based on how you want to implement the frontend.
+It's really up to you based on how you want to implement the frontend. If you do end up changing the schema, please update the OpenAPI spec accordingly.
