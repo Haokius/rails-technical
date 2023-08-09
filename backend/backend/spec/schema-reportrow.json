@@ -8,9 +8,13 @@
     "ticker": {
       "type": "string"
     },
+    "metric": {
+      "type": "string",
+      "enum": ["open", "high", "low", "close", "volume"]
+    },
     "value": {
       "type": "number"
     }
   },
-  "required": ["date", "ticker", "value"]
+  "required": ["date", "ticker", "metric", "value"]
 }
