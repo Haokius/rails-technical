@@ -1,0 +1,4 @@
+#/bin/bash
+
+swagger-cli validate spec.yaml
+swagger-cli bundle -r -o spec.bundle spec.yaml
