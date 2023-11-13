@@ -33,8 +33,6 @@ Create a new repo using this template repo and add @akshayshippy @gregg-shippy @
 
 ## Frontend environment
 
-### Setup
-
 ```bash
 cd frontend
 npm install
@@ -44,8 +42,6 @@ npm start
 The frontend should now be running on port 3000.
 
 ## Backend environment
-
-### Setup
 
 ```bash
 cd backend/backend
@@ -130,3 +126,13 @@ is equally valid as
 ```
 
 It's really up to you based on how you want to implement the frontend. For the backend, please update the pydantic schema accordingly.
+
+# Resources
+Here’s the stack we use internally, and the repo will have most of the infrastructure already in place for you, but you should feel free to choose and use whatever similar tools you feel comfortable with for getting the job done:
+- Python runs our entire middle-layer.
+  - All of our data pipeline that doesn’t run in Postgres views is done with pandas: https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf
+  - We use SQLAlchemy to actually interact with our Postgres database (for this assignment, you’ll be using SQLite since it’s built into Python)
+  - Our webserver uses connexion (on top of Flask): https://connexion.readthedocs.io/en/stable/
+- Typescript with node and eslint-prettier: https://www.npmjs.com/package/eslint-config-airbnb
+- React: https://react.dev/learn
+- Shadcn: https://ui.shadcn.com/docs/
