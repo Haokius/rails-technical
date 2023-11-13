@@ -14,8 +14,8 @@ You will have ~ 48 hours to build the app and submit via github.
 Create a new repo using this template repo and add @akshayshippy @gregg-shippy @mohnish7 @vimeh as collaborators. Feel free to reach out via email if you have any questions. Please also respond to our email with a link to your github repo, once you are ready to submit.
 
 ## Grading Criteria
-- completeness of endpoints' functionality
-- completeness of frontend flows working
+- completeness of endpoints' (CRUD)
+- completeness of frontend flows (CRUD)
 - accuracy of report(s)
 - bonus: plus any additional work done that is outside of the scope of completing this assignment, for example:
   - api design
