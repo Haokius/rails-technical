@@ -4,7 +4,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 Base = declarative_base()
 
-# TODO: define your SQL schema here
+# TODO: define your SQLAlchemy models here
 
 
 def init_db(uri):
