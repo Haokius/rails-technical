@@ -3,6 +3,8 @@
 ## Prompt
 Create a reactive, client-side rendered UI for configuring and viewing stock price reports. As part of this you will need to:
 - Complete the backend skeleton code to perform CRUD operation on the reports in the database
+  - You will need to implement the endpoints. As a guide, there are #TODO: comments in the code to help you.
+  - It is up you what you want the schema of the return objects to be. You can use the example below as a guide, or choose our own to implement.
 - Create UIs for these CRUD operations
 - Create UI for report data
 - Create at least one additional report (tabular or visual) that shows aggregate information (ex: average open price by ticker over entire report period)
@@ -43,13 +45,17 @@ The frontend should now be running on port 3000.
 
 ## Backend environment
 
+- Assuming a UNIX shell environment.
+- Make sure to [install poetry](https://python-poetry.org/docs/)
+
 ```bash
 cd backend/backend
 poetry install
-poetry run server
+poetry shell
+uvicorn main:app --reload
 ```
 
-The backend should now be running on port 8081. You can go to [http://localhost:8081/ui](http://localhost:8081/ui) to see the API documentation.
+The backend should now be running on port 8000. You can go to [http://localhost:8000/docs](http://localhost:8000/docs) to see the API documentation.
 
 ### Example of expected behavior of the backend
 
@@ -130,9 +136,9 @@ It's really up to you based on how you want to implement the frontend. For the b
 # Resources
 Here’s the stack we use internally, and the repo will have most of the infrastructure already in place for you, but you should feel free to choose and use whatever similar tools you feel comfortable with for getting the job done:
 - Python runs our entire middle-layer.
-  - All of our data pipeline that doesn’t run in Postgres views is done with pandas: https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf
-  - We use SQLAlchemy to actually interact with our Postgres database (for this assignment, you’ll be using SQLite since it’s built into Python)
-  - Our webserver uses connexion (on top of Flask): https://connexion.readthedocs.io/en/stable/
+  - [FastAPI](https://fastapi.tiangolo.com/)
+  - [Pydantic](https://pydantic-docs.helpmanual.io/)
+  - [SQLAlchemy](https://docs.sqlalchemy.org/en/20/tutorial/index.html)
 - Typescript with node and eslint-prettier: https://www.npmjs.com/package/eslint-config-airbnb
 - React: https://react.dev/learn
 - Shadcn: https://ui.shadcn.com/docs/
