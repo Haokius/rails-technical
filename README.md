@@ -67,7 +67,7 @@ The backend should now be running on port 8000. You can go to [http://localhost:
 ```bash
 # put report by id
 curl -X 'PUT' \
-  'http://localhost:8081/reports/1' \
+  'http://localhost:8000/reports/1' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -82,7 +82,7 @@ curl -X 'PUT' \
 
 # get report and data
 curl -X 'GET' \
-  'http://localhost:8081/reports/1/data' \
+  'http://localhost:8000/reports/1/data' \
   -H 'accept: application/json'
 ```
 
@@ -148,4 +148,3 @@ Here’s the stack we use internally, and the repo will have most of the infrast
 - Typescript with node and eslint-prettier: https://www.npmjs.com/package/eslint-config-airbnb
 - React: https://react.dev/learn
 - Shadcn: https://ui.shadcn.com/docs/
-
