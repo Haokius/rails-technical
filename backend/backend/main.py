@@ -22,7 +22,7 @@ async def get_all_report_configs() -> list[schemas.ReportBase]:
     pass
 
 
-@app.post("/reports/{id}")
+@app.get("/reports/{id}")
 async def get_report_config(id: int) -> schemas.ReportBase:
     # TODO:
     pass
