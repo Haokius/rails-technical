@@ -17,7 +17,7 @@ You will have ~ 48 hours to build the app and submit via github.
 
 ## Submission
 
-Create a new repo using this template repo and add @akshayshippy @gregg-shippy @mohnish7 @vimeh as collaborators. Feel free to reach out via email if you have any questions. Please also respond to our email with a link to your github repo, once you are ready to submit.
+Create a new repo using this template repo and add @gregg-shippy @mohnish7 @vimeh as collaborators. Feel free to reach out via email if you have any questions. Please also respond to our email with a link to your github repo, once you are ready to submit.
 
 ## Grading Criteria
 
