@@ -5,13 +5,7 @@
         "es6": true,
         "es2021": true
     },
-    "extends": [
-        "airbnb",
-        "plugin:prettier/recommended",
-        "standard-with-typescript",
-        "plugin:react/recommended",
-        "prettier"
-    ],
+    "extends": ["airbnb", "plugin:prettier/recommended", "standard-with-typescript", "plugin:react/recommended", "prettier"],
     "plugins": ["prettier", "react"],
     "parserOptions": {
         "ecmaVersion": "latest",
@@ -36,20 +30,7 @@
         ],
         "react/react-in-jsx-scope": "off",
         "react/jsx-uses-react": "off",
-        // "unused-imports/no-unused-imports": "error",
-        // "unused-imports/no-unused-vars": [
-        //     "warn",
-        //     {
-        //         "vars": "all",
-        //         "varsIgnorePattern": "^_",
-        //         "args": "after-used",
-        //         "argsIgnorePattern": "^_"
-        //     }
-        // ],
-        "react/jsx-filename-extension": [
-            2,
-            { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
-        ]
+        "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }]
     },
     "settings": {
         "import/resolver": {
