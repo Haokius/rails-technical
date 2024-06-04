@@ -4,7 +4,10 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 Base = declarative_base()
 
+
 # TODO: define your SQLAlchemy models here
+class ReportConfig(Base):
+    pass
 
 
 def init_db(uri):
