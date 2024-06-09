@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 import logging
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 from backend import models, schemas
 
 import pandas_datareader.data as web
 
 from datetime import date
+
+from sqlalchemy.exc import SQLAlchemyError
 
 # set logging to display all messages INFO and above
 logger = logging.getLogger()
@@ -34,27 +36,48 @@ async def dummy() -> schemas.ReportBase:
 
 @app.get("/reports")
 async def get_all_report_configs() -> list[schemas.ReportBase]:
-    return db_session.query(models.ReportConfig).all()
+    try:
+        reports = db_session.query(models.ReportConfig).all()
+        return reports
+    except SQLAlchemyError:
+        raise HTTPException(status_code=500, detail="Database Error")
 
 
 @app.get("/reports/{id}")
 async def get_report_config(id: int) -> schemas.ReportBase:
-    return db_session.query(models.ReportConfig).filter(models.ReportConfig.id == id).first()
+    try:
+        report = db_session.query(models.ReportConfig).filter(models.ReportConfig.id == id).first()
+        if report is None:
+            raise HTTPException(status_code=404, detail="Report not found")
+        return report
+    except SQLAlchemyError:
+        raise HTTPException(status_code=500, detail="Database Error")
 
 
 @app.put("/reports/{id}")
 async def put_report_config(id: int, body: schemas.ReportBase) -> None:
-    report = models.ReportConfig(id=id, name=body.name, date_start=body.date_start, date_end=body.date_end, tickers=body.tickers)
-    db_session.add(report)
-    db_session.commit()
-    db_session.refresh(report)
+    try:
+        report = db_session.query(models.ReportConfig).filter(models.ReportConfig.id == id).first()
+        if report is not None:
+            raise HTTPException(status_code=409, detail="Report already exists")
+        report = models.ReportConfig(id=id, name=body.name, date_start=body.date_start, date_end=body.date_end, tickers=body.tickers)
+        db_session.add(report)
+        db_session.commit()
+        db_session.refresh(report)
+    except SQLAlchemyError:
+        raise HTTPException(status_code=500, detail="Database Error")
 
 
 @app.delete("/reports/{id}")
 async def delete_report_config(id: int) -> None:
-    report = db_session.query(models.ReportConfig).filter(models.ReportConfig.id == id).first()
-    db_session.delete(report)
-    db_session.commit()
+    try:
+        report = db_session.query(models.ReportConfig).filter(models.ReportConfig.id == id).first()
+        if report is None:
+            raise HTTPException(status_code=404, detail="Report not found")
+        db_session.delete(report)
+        db_session.commit()
+    except SQLAlchemyError:
+        raise HTTPException(status_code=500, detail="Database Error")
 
 
 @app.get("/reports/{id}/data")
@@ -62,23 +85,40 @@ async def get_report_data(id: int) -> schemas.ReportData:
     # TODO: https://pandas-datareader.readthedocs.io/en/latest/remote_data.html#remote-data-stooq
     
      # first query the report configs database
-    report = db_session.query(models.ReportConfig).filter(models.ReportConfig.id == id).first()
+    try:
+        report = db_session.query(models.ReportConfig).filter(models.ReportConfig.id == id).first()
+        if report is None:
+            raise HTTPException(status_code=404, detail="Report not found")
+    except SQLAlchemyError:
+        raise HTTPException(status_code=500, detail="Database Error")
+    
+    # get the tickers and metrics
     tickers = [ticker_info["ticker"] for ticker_info in report.tickers]
     metrics = [ticker_info["metric"] for ticker_info in report.tickers]
     date_start = report.date_start
     date_end = report.date_end
 
     # get the dataframe
-    df = web.DataReader(tickers, 'stooq', date_start, date_end)
+    try:
+        df = web.DataReader(tickers, 'stooq', date_start, date_end)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error fetching data from stooq")
 
-    output = []
-    # convert to list of ReportDataUnit
-    # iterate through the dataframe by date
-    for date in df.index:
+    def create_report_data_unit(row, tickers, metrics):
+        output = []
         for ticker, metric in zip(tickers, metrics):
-            report_data_unit = schemas.ReportDataUnit(ticker=ticker, date=date, value=df.loc[date, (metric.capitalize(), ticker)], metric=metric)
-            output.append(report_data_unit)
+            try:
+                value = row[(metric.capitalize(), ticker.upper())]
+                report_data_unit = schemas.ReportDataUnit(ticker=ticker, date=row.name, value=value, metric=metric)
+                output.append(report_data_unit)
+            except KeyError:
+                raise HTTPException(status_code=404, detail="Ticker not found/Invalid Ticker")
+        return output
 
+    # apply the function to each row
+    output = df.apply(create_report_data_unit, axis=1, tickers=tickers, metrics=metrics).explode().tolist()
+
+    # reverse the list
     output = output[::-1]
 
     return schemas.ReportData(data=output)
