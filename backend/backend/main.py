@@ -11,6 +11,8 @@ from datetime import date
 
 from sqlalchemy.exc import SQLAlchemyError
 
+from fastapi.middleware.cors import CORSMiddleware
+
 # set logging to display all messages INFO and above
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -21,6 +23,25 @@ db_session = models.init_db("sqlite:///:memory:")
 logger.info("Starting FastAPI server")
 app = FastAPI(title="Rails Takehome", version="0.1.0")
 
+origins = [
+    "http://localhost:3000",
+    "https://localhost:3000",
+    "http://localhost:8000",
+    "https://localhost:8000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
 
 @app.get("/dummy")
 async def dummy() -> schemas.ReportBase:
@@ -33,6 +54,17 @@ async def dummy() -> schemas.ReportBase:
             {"ticker": "AAPL", "metric": "open"},
             {"ticker": "MSFT", "metric": "close"}
         ])
+
+
+# I added this to help with frontend when generating a new id.
+@app.get("/reports/count")
+async def get_report_count() -> int:
+    try:
+        count = db_session.query(models.ReportConfig).count()
+        return count
+    except SQLAlchemyError:
+        raise HTTPException(status_code=500, detail="Database Error")
+
 
 @app.get("/reports")
 async def get_all_report_configs() -> list[schemas.ReportBase]:
@@ -114,6 +146,9 @@ async def get_report_data(id: int) -> schemas.ReportData:
             except KeyError:
                 raise HTTPException(status_code=404, detail="Ticker not found/Invalid Ticker")
         return output
+    
+    print(tickers[0])
+    print(metrics[0])
 
     # apply the function to each row
     output = df.apply(create_report_data_unit, axis=1, tickers=tickers, metrics=metrics).explode().tolist()

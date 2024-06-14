@@ -1,5 +1,9 @@
 # Shippy Fullstack Takehome
 
+## Kevin's README:
+
+For backend proceed as usual, for frontend - cd into shadcn-starter and then npm run dev.
+
 ## Introduction
 
 ### Prompt
