@@ -2,7 +2,7 @@
 
 ## Kevin's README:
 
-For backend proceed as usual, for frontend - cd into shadcn-starter and then npm run dev.
+For backend proceed as usual, for frontend - cd into shadcn-starter-copy and then npm run dev.
 
 ## Introduction
 
