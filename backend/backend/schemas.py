@@ -3,6 +3,7 @@ from datetime import date
 from typing import List, Dict
 
 class ReportBase(BaseModel):
+    id: int
     name: str
     date_start: date
     date_end: date

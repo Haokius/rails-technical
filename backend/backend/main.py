@@ -47,6 +47,7 @@ async def root():
 async def dummy() -> schemas.ReportBase:
     # dummy reportbase
     return schemas.ReportBase(
+        id=1,
         name="dummy", 
         date_start=date(2022, 1, 1), 
         date_end=date(2022, 1, 10), 
@@ -157,3 +158,5 @@ async def get_report_data(id: int) -> schemas.ReportData:
     output = output[::-1]
 
     return schemas.ReportData(data=output)
+
+    
